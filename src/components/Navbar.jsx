@@ -1,6 +1,11 @@
 import React from "react";
 
-const Navbar = ({ onAlgorithmChange, onMazeTypeChange, onSpeedChange }) => {
+const Navbar = ({
+  onAlgorithmChange,
+  onMazeTypeChange,
+  onSpeedChange,
+  onResetGrid,
+}) => {
   return (
     <div className="navbar">
       <h1>Pathfinding Visualizer</h1>
@@ -29,6 +34,7 @@ const Navbar = ({ onAlgorithmChange, onMazeTypeChange, onSpeedChange }) => {
           <option value="medium">Medium</option>
           <option value="slow">Slow</option>
         </select>
+        <button onClick={onResetGrid}>Reset Grid</button>
       </div>
     </div>
   );

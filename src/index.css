@@ -1,73 +1,23 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+/* index.css */
 
-body {
-  font-family: "Quicksand", sans-serif;
-  overflow-x: hidden;
-}
-
-/* .navbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: #ffffff;
-  color: #000000;
-  font-weight: 400;
-  font-size: 12px;
-  padding: 20px 20px;
-}
-
-.nav-dropdown {
-  display: flex;
-  flex-direction: column;
-  row-gap: 10px;
-}
-
-.dropdown {
-  font-size: 14px;
-}
-
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(20px, 1fr));
-  gap: 1px;
-}
-
-.node {
-  width: 20px;
-  height: 20px;
-  border: 1px solid #ddd;
-}
-
-.node-start {
-  background-color: green;
-}
-
-.node-end {
-  background-color: red;
-}
-
-.node-wall {
-  background-color: black;
-}
-
-.node-visited {
-  background-color: lightblue;
-  transition: background-color 0.3s ease;
-}
-
-.node-shortest-path {
-  background-color: yellow;
-  transition: background-color 0.3s ease;
-} */
-
-/* src/index.css */
+/* General Styles */
 body {
   margin: 0;
-  font-family: Arial, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.App {
+  text-align: center;
+}
+
+button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
 }
 
 .grid {
@@ -77,15 +27,42 @@ body {
   margin-top: 20px;
 }
 
-.grid > div {
+.grid div {
   display: flex;
 }
 
+/* Navbar Styles */
+.navbar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #282c34;
+  padding: 20px;
+  color: white;
+}
+
+.navbar h1 {
+  margin: 0;
+  font-size: 24px;
+}
+
+.nav-dropdown {
+  margin-top: 10px;
+  display: flex;
+  gap: 10px;
+}
+
+.dropdown {
+  padding: 5px 10px;
+  font-size: 16px;
+}
+
+/* Node Styles */
 .node {
   width: 25px;
   height: 25px;
-  background-color: white;
   border: 1px solid #ddd;
+  display: inline-block;
   box-sizing: border-box;
 }
 
@@ -102,35 +79,16 @@ body {
 }
 
 .node-visited {
-  background-color: #add8e6;
-  transition: background-color 0.3s ease;
+  background-color: #b0e0e6;
 }
 
 .node-shortest-path {
   background-color: yellow;
-  transition: background-color 0.3s ease;
 }
 
-@media (max-width: 768px) {
-  .node {
-    width: 20px;
-    height: 20px;
-  }
-}
-
-@media (max-width: 480px) {
+@media (max-width: 600px) {
   .node {
     width: 15px;
     height: 15px;
   }
-}
-
-.node-visited {
-  background-color: #add8e6;
-  transition: background-color 0.3s ease;
-}
-
-.node-shortest-path {
-  background-color: yellow;
-  transition: background-color 0.3s ease;
 }

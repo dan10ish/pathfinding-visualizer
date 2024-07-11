@@ -1,16 +1,8 @@
-// src/components/Node.js
 import React from "react";
+import "../index.css";
 
-const Node = ({
-  row,
-  col,
-  isStart,
-  isEnd,
-  isWall,
-  onMouseDown,
-  onMouseEnter,
-  onMouseUp,
-}) => {
+const Node = ({ node, onMouseDown, onMouseEnter, onMouseUp }) => {
+  const { row, col, isStart, isEnd, isWall } = node;
   const extraClassName = isStart
     ? "node-start"
     : isEnd
@@ -25,7 +17,7 @@ const Node = ({
       className={`node ${extraClassName}`}
       onMouseDown={() => onMouseDown(row, col)}
       onMouseEnter={() => onMouseEnter(row, col)}
-      onMouseUp={onMouseUp}
+      onMouseUp={() => onMouseUp()}
     ></div>
   );
 };

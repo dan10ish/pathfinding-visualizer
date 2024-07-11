@@ -1,39 +1,23 @@
-// src/components/Grid.js
 import React from "react";
 import Node from "./Node";
+import "../index.css";
 
-const Grid = ({
-  grid,
-  onMouseDown,
-  onMouseEnter,
-  onMouseUp,
-  mouseIsPressed,
-}) => {
+const Grid = ({ grid, onMouseDown, onMouseEnter, onMouseUp }) => {
   return (
     <div className="grid">
-      {grid.map((row, rowIdx) => {
-        return (
-          <div key={rowIdx}>
-            {row.map((node, nodeIdx) => {
-              const { row, col, isStart, isEnd, isWall } = node;
-              return (
-                <Node
-                  key={nodeIdx}
-                  col={col}
-                  isStart={isStart}
-                  isEnd={isEnd}
-                  isWall={isWall}
-                  mouseIsPressed={mouseIsPressed}
-                  onMouseDown={(row, col) => onMouseDown(row, col)}
-                  onMouseEnter={(row, col) => onMouseEnter(row, col)}
-                  onMouseUp={onMouseUp}
-                  row={row}
-                ></Node>
-              );
-            })}
-          </div>
-        );
-      })}
+      {grid.map((row, rowIdx) => (
+        <div key={rowIdx} className="grid-row">
+          {row.map((node, nodeIdx) => (
+            <Node
+              key={nodeIdx}
+              node={node}
+              onMouseDown={onMouseDown}
+              onMouseEnter={onMouseEnter}
+              onMouseUp={onMouseUp}
+            />
+          ))}
+        </div>
+      ))}
     </div>
   );
 };
