@@ -1,43 +1,46 @@
 // src/algorithms/astar.js
 export function astar(grid, startNode, endNode) {
-  const openSet = [startNode];
   const visitedNodesInOrder = [];
-  startNode.g = 0;
-  startNode.f = heuristic(startNode, endNode);
+  startNode.distance = 0;
+  const unvisitedNodes = getAllNodes(grid);
 
-  while (openSet.length) {
-    sortNodesByF(openSet);
-    const currentNode = openSet.shift();
-    if (currentNode.isWall) continue;
-    if (currentNode === endNode) return visitedNodesInOrder;
-    visitedNodesInOrder.push(currentNode);
-    currentNode.isVisited = true;
+  while (!!unvisitedNodes.length) {
+    sortNodesByDistanceWithHeuristic(unvisitedNodes, endNode);
+    const closestNode = unvisitedNodes.shift();
+    if (closestNode.isWall) continue;
+    if (closestNode.distance === Infinity) return visitedNodesInOrder;
+    closestNode.isVisited = true;
+    visitedNodesInOrder.push(closestNode);
+    if (closestNode === endNode) return visitedNodesInOrder;
+    updateUnvisitedNeighborsAStar(closestNode, endNode, grid);
+  }
+}
 
-    const neighbors = getUnvisitedNeighbors(currentNode, grid);
-    for (const neighbor of neighbors) {
-      const tentativeG = currentNode.g + 1;
-      if (tentativeG < neighbor.g) {
-        neighbor.previousNode = currentNode;
-        neighbor.g = tentativeG;
-        neighbor.f = neighbor.g + heuristic(neighbor, endNode);
-        if (!openSet.includes(neighbor)) {
-          openSet.push(neighbor);
-        }
-      }
+function sortNodesByDistanceWithHeuristic(unvisitedNodes, endNode) {
+  unvisitedNodes.sort((nodeA, nodeB) => {
+    const distanceA = nodeA.distance + heuristic(nodeA, endNode);
+    const distanceB = nodeB.distance + heuristic(nodeB, endNode);
+    return distanceA - distanceB;
+  });
+}
+
+function heuristic(nodeA, nodeB) {
+  // Using Manhattan distance as heuristic
+  return Math.abs(nodeA.row - nodeB.row) + Math.abs(nodeA.col - nodeB.col);
+}
+
+function updateUnvisitedNeighborsAStar(node, endNode, grid) {
+  const unvisitedNeighbors = getUnvisitedNeighbors(node, grid);
+  for (const neighbor of unvisitedNeighbors) {
+    const newDistance = node.distance + 1;
+    if (newDistance < neighbor.distance) {
+      neighbor.distance = newDistance;
+      neighbor.previousNode = node;
     }
   }
 }
 
-function heuristic(node, endNode) {
-  const dx = Math.abs(node.col - endNode.col);
-  const dy = Math.abs(node.row - endNode.row);
-  return dx + dy;
-}
-
-function sortNodesByF(openSet) {
-  openSet.sort((nodeA, nodeB) => nodeA.f - nodeB.f);
-}
-
+// Helper functions as in Dijkstra's algorithm
 function getUnvisitedNeighbors(node, grid) {
   const neighbors = [];
   const { col, row } = node;
@@ -46,6 +49,16 @@ function getUnvisitedNeighbors(node, grid) {
   if (col > 0) neighbors.push(grid[row][col - 1]);
   if (col < grid[0].length - 1) neighbors.push(grid[row][col + 1]);
   return neighbors.filter((neighbor) => !neighbor.isVisited);
+}
+
+function getAllNodes(grid) {
+  const nodes = [];
+  for (const row of grid) {
+    for (const node of row) {
+      nodes.push(node);
+    }
+  }
+  return nodes;
 }
 
 export function getNodesInShortestPathOrderAStar(finishNode) {

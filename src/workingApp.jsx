@@ -91,31 +91,33 @@ const App = () => {
   };
 
   const clearVisualization = () => {
-    for (let row = 0; row < ROWS; row++) {
-      for (let col = 0; col < COLS; col++) {
-        const node = document.getElementById(`node-${row}-${col}`);
-        if (node) {
-          if (row === START_NODE_ROW && col === START_NODE_COL) {
-            node.className = "node node-start";
-          } else if (row === END_NODE_ROW && col === END_NODE_COL) {
-            node.className = "node node-end";
-          } else {
-            node.className = "node";
-          }
-        }
-      }
+    const nodes = document.getElementsByClassName("node");
+    for (let i = 0; i < nodes.length; i++) {
+      nodes[i].className = "node";
     }
   };
 
   const handleMouseDown = (row, col) => {
-    const newGrid = getNewGridWithWallToggled(grid, row, col);
+    const newGrid = grid.slice();
+    const node = newGrid[row][col];
+    const newNode = {
+      ...node,
+      isWall: !node.isWall,
+    };
+    newGrid[row][col] = newNode;
     setGrid(newGrid);
     setMouseIsPressed(true);
   };
 
   const handleMouseEnter = (row, col) => {
     if (!mouseIsPressed) return;
-    const newGrid = getNewGridWithWallToggled(grid, row, col);
+    const newGrid = grid.slice();
+    const node = newGrid[row][col];
+    const newNode = {
+      ...node,
+      isWall: !node.isWall,
+    };
+    newGrid[row][col] = newNode;
     setGrid(newGrid);
   };
 
@@ -123,40 +125,27 @@ const App = () => {
     setMouseIsPressed(false);
   };
 
-  const getNewGridWithWallToggled = (grid, row, col) => {
-    const newGrid = grid.slice();
-    const node = newGrid[row][col];
-    if (!node.isStart && !node.isEnd) {
-      const newNode = {
-        ...node,
-        isWall: !node.isWall,
-      };
-      newGrid[row][col] = newNode;
-    }
-    return newGrid;
-  };
-
   const visualizeAlgorithm = () => {
-    const startNode = grid[START_NODE_ROW][START_NODE_COL];
-    const endNode = grid[END_NODE_ROW][END_NODE_COL];
+    const start = grid[START_NODE_ROW][START_NODE_COL];
+    const end = grid[END_NODE_ROW][END_NODE_COL];
     let visitedNodesInOrder;
     let nodesInShortestPathOrder;
     switch (algorithm) {
       case "dijkstra":
-        visitedNodesInOrder = dijkstra(grid, startNode, endNode);
-        nodesInShortestPathOrder = getNodesInShortestPathOrderDijkstra(endNode);
+        visitedNodesInOrder = dijkstra(grid, start, end);
+        nodesInShortestPathOrder = getNodesInShortestPathOrderDijkstra(end);
         break;
       case "bfs":
-        visitedNodesInOrder = bfs(grid, startNode, endNode);
-        nodesInShortestPathOrder = getNodesInShortestPathOrderBFS(endNode);
+        visitedNodesInOrder = bfs(grid, start, end);
+        nodesInShortestPathOrder = getNodesInShortestPathOrderBFS(end);
         break;
       case "dfs":
-        visitedNodesInOrder = dfs(grid, startNode, endNode);
-        nodesInShortestPathOrder = getNodesInShortestPathOrderDFS(endNode);
+        visitedNodesInOrder = dfs(grid, start, end);
+        nodesInShortestPathOrder = getNodesInShortestPathOrderDFS(end);
         break;
       case "astar":
-        visitedNodesInOrder = astar(grid, startNode, endNode);
-        nodesInShortestPathOrder = getNodesInShortestPathOrderAStar(endNode);
+        visitedNodesInOrder = astar(grid, start, end);
+        nodesInShortestPathOrder = getNodesInShortestPathOrderAStar(end);
         break;
       default:
         return;
@@ -174,10 +163,8 @@ const App = () => {
       }
       setTimeout(() => {
         const node = visitedNodesInOrder[i];
-        if (!node.isStart && !node.isEnd) {
-          document.getElementById(`node-${node.row}-${node.col}`).className =
-            "node node-visited";
-        }
+        document.getElementById(`node-${node.row}-${node.col}`).className =
+          "node node-visited";
       }, speed * i);
     }
   };
@@ -186,10 +173,8 @@ const App = () => {
     for (let i = 0; i < nodesInShortestPathOrder.length; i++) {
       setTimeout(() => {
         const node = nodesInShortestPathOrder[i];
-        if (!node.isStart && !node.isEnd) {
-          document.getElementById(`node-${node.row}-${node.col}`).className =
-            "node node-shortest-path";
-        }
+        document.getElementById(`node-${node.row}-${node.col}`).className =
+          "node node-shortest-path";
       }, 50 * i);
     }
   };
