@@ -185,7 +185,7 @@ const App = () => {
           document.getElementById(`node-${node.row}-${node.col}`).className =
             "node node-shortest-path";
         }
-      }, 50 * i);
+      }, 20 * i);
     }
   };
 

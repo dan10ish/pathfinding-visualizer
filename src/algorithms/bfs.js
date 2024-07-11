@@ -3,17 +3,26 @@ export function bfs(grid, startNode, endNode) {
   const queue = [startNode];
   startNode.isVisited = true;
 
-  while (!!queue.length) {
+  while (queue.length) {
     const currentNode = queue.shift();
+
+    if (currentNode.isWall) continue;
+
     visitedNodesInOrder.push(currentNode);
+
     if (currentNode === endNode) return visitedNodesInOrder;
+
     const neighbors = getUnvisitedNeighbors(currentNode, grid);
     for (const neighbor of neighbors) {
-      neighbor.isVisited = true;
-      neighbor.previousNode = currentNode;
-      queue.push(neighbor);
+      if (!neighbor.isWall && !neighbor.isVisited) {
+        neighbor.isVisited = true;
+        neighbor.previousNode = currentNode;
+        queue.push(neighbor);
+      }
     }
   }
+
+  return visitedNodesInOrder;
 }
 
 function getUnvisitedNeighbors(node, grid) {

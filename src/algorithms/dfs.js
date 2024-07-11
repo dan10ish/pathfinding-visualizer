@@ -3,17 +3,26 @@ export function dfs(grid, startNode, endNode) {
   const stack = [startNode];
   startNode.isVisited = true;
 
-  while (!!stack.length) {
+  while (stack.length) {
     const currentNode = stack.pop();
+
+    if (currentNode.isWall) continue;
+
     visitedNodesInOrder.push(currentNode);
+
     if (currentNode === endNode) return visitedNodesInOrder;
+
     const neighbors = getUnvisitedNeighbors(currentNode, grid);
     for (const neighbor of neighbors) {
-      neighbor.isVisited = true;
-      neighbor.previousNode = currentNode;
-      stack.push(neighbor);
+      if (!neighbor.isWall && !neighbor.isVisited) {
+        neighbor.isVisited = true;
+        neighbor.previousNode = currentNode;
+        stack.push(neighbor);
+      }
     }
   }
+
+  return visitedNodesInOrder;
 }
 
 function getUnvisitedNeighbors(node, grid) {
