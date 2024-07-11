@@ -8,7 +8,7 @@ import {
 import { bfs, getNodesInShortestPathOrderBFS } from "./algorithms/bfs";
 import { dfs, getNodesInShortestPathOrderDFS } from "./algorithms/dfs";
 import { astar, getNodesInShortestPathOrderAStar } from "./algorithms/astar";
-import { recursiveDivisionMaze } from "./algorithms/mazeGenerator";
+import { generateMaze } from "./algorithms/mazeGenerator";
 import "./index.css";
 
 const ROWS = 20;
@@ -58,14 +58,9 @@ const App = () => {
   };
 
   const handleMazeTypeChange = (type) => {
-    let newGrid = grid.slice();
-    if (type === "recursive") {
-      newGrid = recursiveDivisionMaze(
-        grid,
-        grid[START_NODE_ROW][START_NODE_COL],
-        grid[END_NODE_ROW][END_NODE_COL]
-      );
-    }
+    const startNode = grid[START_NODE_ROW][START_NODE_COL];
+    const endNode = grid[END_NODE_ROW][END_NODE_COL];
+    const newGrid = generateMaze(grid, startNode, endNode, type);
     setGrid(newGrid);
   };
 

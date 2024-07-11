@@ -23,8 +23,9 @@ const Navbar = ({
           className="dropdown"
           onChange={(e) => onMazeTypeChange(e.target.value)}
         >
+          <option value="none">None</option>
           <option value="random">Random Maze</option>
-          <option value="recursive">Recursive</option>
+          <option value="recursive">Recursive Maze</option>
         </select>
         <select
           className="dropdown"

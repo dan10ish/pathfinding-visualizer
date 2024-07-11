@@ -1,43 +1,244 @@
 // src/algorithms/mazeGenerator.js
-export const recursiveDivisionMaze = (grid, startNode, endNode) => {
-  const newGrid = grid.slice();
-  divide(
-    newGrid,
-    0,
-    newGrid.length - 1,
-    0,
-    newGrid[0].length - 1,
-    startNode,
-    endNode
+
+export const generateMaze = (grid, startNode, endNode, type) => {
+  const newGrid = grid.map((row) =>
+    row.map((node) => ({ ...node, isWall: false }))
   );
+
+  if (type === "random") {
+    return randomMaze(newGrid, startNode, endNode);
+  } else if (type === "recursive") {
+    return recursiveDivisionMaze(newGrid, startNode, endNode);
+  }
+
+  return newGrid; // Return unmodified grid for "none" option
+};
+
+const randomMaze = (grid, startNode, endNode) => {
+  const newGrid = grid.slice();
+  for (let row = 0; row < newGrid.length; row++) {
+    for (let col = 0; col < newGrid[0].length; col++) {
+      if (
+        Math.random() < 0.3 &&
+        !(row === startNode.row && col === startNode.col) &&
+        !(row === endNode.row && col === endNode.col)
+      ) {
+        newGrid[row][col].isWall = true;
+      }
+    }
+  }
+
+  // Ensure a valid path exists
+  const path = findPath(newGrid, startNode, endNode);
+  if (!path) {
+    return randomMaze(grid, startNode, endNode); // Regenerate if no valid path
+  }
+
   return newGrid;
 };
 
-const divide = (grid, top, bottom, left, right, startNode, endNode) => {
-  if (bottom - top < 2 || right - left < 2) return;
+const recursiveDivisionMaze = (grid, startNode, endNode) => {
+  const newGrid = grid.slice();
+  addOuterWalls(newGrid);
 
-  const horizontal = bottom - top > right - left;
-  if (horizontal) {
-    const row = Math.floor(Math.random() * (bottom - top - 1)) + top + 1;
-    for (let col = left; col <= right; col++) {
-      if (!(grid[row][col] === startNode || grid[row][col] === endNode)) {
-        grid[row][col].isWall = true;
-      }
-    }
-    const gap = Math.floor(Math.random() * (right - left + 1)) + left;
-    grid[row][gap].isWall = false;
-    divide(grid, top, row - 1, left, right, startNode, endNode);
-    divide(grid, row + 1, bottom, left, right, startNode, endNode);
-  } else {
-    const col = Math.floor(Math.random() * (right - left - 1)) + left + 1;
-    for (let row = top; row <= bottom; row++) {
-      if (!(grid[row][col] === startNode || grid[row][col] === endNode)) {
-        grid[row][col].isWall = true;
-      }
-    }
-    const gap = Math.floor(Math.random() * (bottom - top + 1)) + top;
-    grid[gap][col].isWall = false;
-    divide(grid, top, bottom, left, col - 1, startNode, endNode);
-    divide(grid, top, bottom, col + 1, right, startNode, endNode);
+  recursiveDivide(
+    newGrid,
+    1,
+    newGrid.length - 2,
+    1,
+    newGrid[0].length - 2,
+    chooseOrientation(newGrid.length - 2, newGrid[0].length - 2),
+    startNode,
+    endNode
+  );
+
+  // Ensure a valid path exists
+  const path = findPath(newGrid, startNode, endNode);
+  if (!path) {
+    return recursiveDivisionMaze(grid, startNode, endNode); // Regenerate if no valid path
   }
+
+  return newGrid;
+};
+
+const recursiveDivide = (
+  grid,
+  startRow,
+  endRow,
+  startCol,
+  endCol,
+  orientation,
+  startNode,
+  endNode
+) => {
+  if (endRow - startRow < 2 || endCol - startCol < 2) {
+    return;
+  }
+
+  let horizontalDividers = [];
+  let verticalDividers = [];
+  let dividersCount =
+    orientation === "horizontal" ? endRow - startRow : endCol - startCol;
+  let dividerPlacement;
+
+  if (orientation === "horizontal") {
+    // Generate horizontal dividers
+    for (let i = 0; i < dividersCount; i++) {
+      horizontalDividers.push(startRow + i);
+    }
+    dividerPlacement = getRandomElement(horizontalDividers);
+    for (let col = startCol; col <= endCol; col++) {
+      if (
+        grid[dividerPlacement][col].isStart ||
+        grid[dividerPlacement][col].isEnd ||
+        col === startCol ||
+        col === endCol
+      ) {
+        continue;
+      }
+      grid[dividerPlacement][col].isWall = true;
+    }
+    let passage =
+      Math.floor(Math.random() * (endCol - startCol + 1)) + startCol;
+    grid[dividerPlacement][passage].isWall = false;
+  } else {
+    // Generate vertical dividers
+    for (let i = 0; i < dividersCount; i++) {
+      verticalDividers.push(startCol + i);
+    }
+    dividerPlacement = getRandomElement(verticalDividers);
+    for (let row = startRow; row <= endRow; row++) {
+      if (
+        grid[row][dividerPlacement].isStart ||
+        grid[row][dividerPlacement].isEnd ||
+        row === startRow ||
+        row === endRow
+      ) {
+        continue;
+      }
+      grid[row][dividerPlacement].isWall = true;
+    }
+    let passage =
+      Math.floor(Math.random() * (endRow - startRow + 1)) + startRow;
+    grid[passage][dividerPlacement].isWall = false;
+  }
+
+  // Recursive calls
+  if (orientation === "horizontal") {
+    recursiveDivide(
+      grid,
+      startRow,
+      dividerPlacement - 1,
+      startCol,
+      endCol,
+      chooseOrientation(dividerPlacement - 1 - startRow, endCol - startCol),
+      startNode,
+      endNode
+    );
+    recursiveDivide(
+      grid,
+      dividerPlacement + 1,
+      endRow,
+      startCol,
+      endCol,
+      chooseOrientation(endRow - (dividerPlacement + 1), endCol - startCol),
+      startNode,
+      endNode
+    );
+  } else {
+    recursiveDivide(
+      grid,
+      startRow,
+      endRow,
+      startCol,
+      dividerPlacement - 1,
+      chooseOrientation(endRow - startRow, dividerPlacement - 1 - startCol),
+      startNode,
+      endNode
+    );
+    recursiveDivide(
+      grid,
+      startRow,
+      endRow,
+      dividerPlacement + 1,
+      endCol,
+      chooseOrientation(endRow - startRow, endCol - (dividerPlacement + 1)),
+      startNode,
+      endNode
+    );
+  }
+};
+
+const chooseOrientation = (width, height) => {
+  if (width < height) {
+    return "horizontal";
+  } else if (height < width) {
+    return "vertical";
+  } else {
+    return Math.random() < 0.5 ? "horizontal" : "vertical";
+  }
+};
+
+const getRandomElement = (array) => {
+  return array[Math.floor(Math.random() * array.length)];
+};
+
+const addOuterWalls = (grid) => {
+  for (let i = 0; i < grid.length; i++) {
+    if (i === 0 || i === grid.length - 1) {
+      for (let j = 0; j < grid[0].length; j++) {
+        grid[i][j].isWall = true;
+      }
+    } else {
+      grid[i][0].isWall = true;
+      grid[i][grid[0].length - 1].isWall = true;
+    }
+  }
+};
+
+const findPath = (grid, start, end) => {
+  const queue = [start];
+  const visited = new Set();
+  const directions = [
+    [0, 1],
+    [1, 0],
+    [0, -1],
+    [-1, 0],
+  ];
+
+  while (queue.length > 0) {
+    const current = queue.shift();
+    if (current.row === end.row && current.col === end.col) {
+      return true;
+    }
+
+    for (let [dx, dy] of directions) {
+      const newRow = current.row + dx;
+      const newCol = current.col + dy;
+      const key = `${newRow},${newCol}`;
+
+      if (
+        newRow >= 0 &&
+        newRow < grid.length &&
+        newCol >= 0 &&
+        newCol < grid[0].length &&
+        !grid[newRow][newCol].isWall &&
+        !visited.has(key)
+      ) {
+        queue.push(grid[newRow][newCol]);
+        visited.add(key);
+      }
+    }
+  }
+
+  return false;
+};
+
+// Helper function to shuffle an array
+const shuffleArray = (array) => {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
 };
