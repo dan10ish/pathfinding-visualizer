@@ -1,4 +1,3 @@
-// src/algorithms/dfs.js
 export function dfs(grid, startNode, endNode) {
   const visitedNodesInOrder = [];
   const stack = [startNode];

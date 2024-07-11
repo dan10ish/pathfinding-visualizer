@@ -1,4 +1,3 @@
-// src/algorithms/bfs.js
 export function bfs(grid, startNode, endNode) {
   const visitedNodesInOrder = [];
   const queue = [startNode];

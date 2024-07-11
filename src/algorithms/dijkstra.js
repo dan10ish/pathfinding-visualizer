@@ -1,4 +1,3 @@
-// src/algorithms/dijkstra.js
 export function dijkstra(grid, startNode, endNode) {
   const visitedNodesInOrder = [];
   startNode.distance = 0;

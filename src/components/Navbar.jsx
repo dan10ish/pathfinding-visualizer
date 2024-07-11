@@ -10,6 +10,7 @@ const Navbar = ({
     <div className="navbar">
       <h1>Pathfinding Visualizer</h1>
       <div className="nav-dropdown">
+        <div className="selectName">Algorithm :</div>
         <select
           className="dropdown"
           onChange={(e) => onAlgorithmChange(e.target.value)}
@@ -19,6 +20,7 @@ const Navbar = ({
           <option value="dfs">DFS</option>
           <option value="astar">A*</option>
         </select>
+        <div className="selectName">Maze Type :</div>
         <select
           className="dropdown"
           onChange={(e) => onMazeTypeChange(e.target.value)}
@@ -27,6 +29,7 @@ const Navbar = ({
           <option value="random">Random Maze</option>
           <option value="recursive">Recursive Maze</option>
         </select>
+        <div className="selectName">Speed :</div>
         <select
           className="dropdown"
           onChange={(e) => onSpeedChange(e.target.value)}
@@ -35,8 +38,10 @@ const Navbar = ({
           <option value="medium">Medium</option>
           <option value="slow">Slow</option>
         </select>
-        <button onClick={onResetGrid}>Reset Grid</button>
       </div>
+      <button className="resetButton" onClick={onResetGrid}>
+        Reset Grid
+      </button>
     </div>
   );
 };

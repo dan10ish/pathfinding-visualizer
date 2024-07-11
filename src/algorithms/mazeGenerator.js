@@ -1,5 +1,3 @@
-// src/algorithms/mazeGenerator.js
-
 export const generateMaze = (grid, startNode, endNode, type) => {
   const newGrid = grid.map((row) =>
     row.map((node) => ({ ...node, isWall: false }))
@@ -11,7 +9,7 @@ export const generateMaze = (grid, startNode, endNode, type) => {
     return recursiveDivisionMaze(newGrid, startNode, endNode);
   }
 
-  return newGrid; // Return unmodified grid for "none" option
+  return newGrid;
 };
 
 const randomMaze = (grid, startNode, endNode) => {
@@ -234,7 +232,6 @@ const findPath = (grid, start, end) => {
   return false;
 };
 
-// Helper function to shuffle an array
 const shuffleArray = (array) => {
   for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));

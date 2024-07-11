@@ -1,4 +1,3 @@
-// src/algorithms/astar.js
 export function astar(grid, startNode, endNode) {
   const visitedNodesInOrder = [];
   startNode.distance = 0;
@@ -25,7 +24,6 @@ function sortNodesByDistanceWithHeuristic(unvisitedNodes, endNode) {
 }
 
 function heuristic(nodeA, nodeB) {
-  // Using Manhattan distance as heuristic
   return Math.abs(nodeA.row - nodeB.row) + Math.abs(nodeA.col - nodeB.col);
 }
 
@@ -40,7 +38,6 @@ function updateUnvisitedNeighborsAStar(node, endNode, grid) {
   }
 }
 
-// Helper functions as in Dijkstra's algorithm
 function getUnvisitedNeighbors(node, grid) {
   const neighbors = [];
   const { col, row } = node;

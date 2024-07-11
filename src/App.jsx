@@ -204,7 +204,7 @@ const App = () => {
         onMouseUp={handleMouseUp}
       />
       <button onClick={() => visualizeAlgorithm()}>
-        Visualize {algorithm.charAt(0).toUpperCase() + algorithm.slice(1)}
+        Visualize {algorithm.toUpperCase()}
       </button>
     </div>
   );

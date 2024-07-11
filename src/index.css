@@ -1,12 +1,14 @@
-/* index.css */
-
-/* General Styles */
-body {
+* {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    "Helvetica Neue", Arial, sans-serif;
+  padding: 0;
+  box-sizing: border-box;
+}
+html,
+body {
+  font-family: "Quicksand", serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
 }
 
 .App {
@@ -31,64 +33,101 @@ button {
   display: flex;
 }
 
-/* Navbar Styles */
 .navbar {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: #282c34;
-  padding: 20px;
-  color: white;
+  background-color: #eeeeee;
+  padding: 10px 10px 20px 10px;
+  color: #000000;
 }
 
 .navbar h1 {
   margin: 0;
-  font-size: 24px;
+  font-size: 22px;
+  font-weight: 500;
 }
 
 .nav-dropdown {
-  margin-top: 10px;
-  display: flex;
-  gap: 10px;
+  margin-top: 20px;
+  display: grid;
+  grid-template-columns: auto auto;
+  align-items: center;
+  column-gap: 10px;
+  row-gap: 10px;
 }
 
 .dropdown {
-  padding: 5px 10px;
-  font-size: 16px;
+  height: 30px;
+  font-size: 12px;
 }
 
-/* Node Styles */
+.selectName {
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.grid {
+  padding-top: 20px;
+}
+
 .node {
   width: 25px;
   height: 25px;
-  border: 1px solid #ddd;
+  border: 1px solid #e2e2e2;
   display: inline-block;
   box-sizing: border-box;
 }
 
 .node-start {
-  background-color: green;
+  background-color: rgb(0, 197, 53);
 }
 
 .node-end {
-  background-color: red;
+  background-color: rgb(255, 0, 0);
 }
 
 .node-wall {
-  background-color: black;
+  background-color: rgb(0, 0, 0);
 }
 
 .node-visited {
-  background-color: #b0e0e6;
+  background-color: #93dfe9;
 }
 
 .node-shortest-path {
-  background-color: yellow;
+  background-color: rgb(5, 255, 5);
 }
 
 @media (max-width: 600px) {
   .node {
     width: 15px;
     height: 15px;
+  }
+
+  .App {
+    padding-bottom: 30px;
+  }
+}
+
+@media (min-width: 600px) {
+  .nav-dropdown {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    column-gap: 20px;
+  }
+
+  .dropdown {
+    font-size: 14px;
+  }
+
+  .selectName {
+    font-size: 16px;
+  }
+
+  .App {
+    padding-bottom: 50px;
   }
 }
