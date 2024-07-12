@@ -22,7 +22,8 @@ const App = () => {
   const [grid, setGrid] = useState([]);
   const [mouseIsPressed, setMouseIsPressed] = useState(false);
   const [algorithm, setAlgorithm] = useState("dijkstra");
-  const [speed, setSpeed] = useState(10);
+  const [speed, setSpeed] = useState(5);
+  const [mazeType, setMazeType] = useState("none");
 
   useEffect(() => {
     resetGrid();
@@ -58,6 +59,7 @@ const App = () => {
   };
 
   const handleMazeTypeChange = (type) => {
+    setMazeType(type);
     const startNode = grid[START_NODE_ROW][START_NODE_COL];
     const endNode = grid[END_NODE_ROW][END_NODE_COL];
     const newGrid = generateMaze(grid, startNode, endNode, type);
@@ -67,22 +69,23 @@ const App = () => {
   const handleSpeedChange = (speed) => {
     switch (speed) {
       case "fast":
-        setSpeed(10);
+        setSpeed(5);
         break;
       case "medium":
-        setSpeed(50);
+        setSpeed(20);
         break;
       case "slow":
-        setSpeed(100);
+        setSpeed(40);
         break;
       default:
-        setSpeed(10);
+        setSpeed(5);
     }
   };
 
   const handleResetGrid = () => {
     resetGrid();
     clearVisualization();
+    setMazeType("none");
   };
 
   const clearVisualization = () => {
@@ -192,6 +195,8 @@ const App = () => {
   return (
     <div className="App">
       <Navbar
+        algorithm={algorithm}
+        mazeType={mazeType}
         onAlgorithmChange={handleAlgorithmChange}
         onMazeTypeChange={handleMazeTypeChange}
         onSpeedChange={handleSpeedChange}

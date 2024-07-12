@@ -31,7 +31,7 @@ Click [here](http://dan10ish.github.io/pathfinding-visualizer/) to view the live
 
 ## Screenshots
 
-![Demo Screenshot](public/assets/Readme-SC.png)
+![Demo Screenshot](./assets/Readme-SC.png)
 
 ## Getting Started
 

@@ -1,6 +1,8 @@
 import React from "react";
 
 const Navbar = ({
+  algorithm,
+  mazeType,
   onAlgorithmChange,
   onMazeTypeChange,
   onSpeedChange,
@@ -13,6 +15,7 @@ const Navbar = ({
         <div className="selectName">Algorithm :</div>
         <select
           className="dropdown"
+          value={algorithm}
           onChange={(e) => onAlgorithmChange(e.target.value)}
         >
           <option value="dijkstra">Dijkstra</option>
@@ -23,6 +26,7 @@ const Navbar = ({
         <div className="selectName">Maze Type :</div>
         <select
           className="dropdown"
+          value={mazeType}
           onChange={(e) => onMazeTypeChange(e.target.value)}
         >
           <option value="none">None</option>
