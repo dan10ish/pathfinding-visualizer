@@ -14,25 +14,33 @@ export const generateMaze = (grid, startNode, endNode, type) => {
 
 const randomMaze = (grid, startNode, endNode) => {
   const newGrid = grid.slice();
-  for (let row = 0; row < newGrid.length; row++) {
-    for (let col = 0; col < newGrid[0].length; col++) {
-      if (
-        Math.random() < 0.3 &&
-        !(row === startNode.row && col === startNode.col) &&
-        !(row === endNode.row && col === endNode.col)
-      ) {
-        newGrid[row][col].isWall = true;
+  const wallProbability = 0.3;
+  const maxAttempts = 100; // Maximum number of attempts to generate a valid maze
+
+  for (let attempt = 0; attempt < maxAttempts; attempt++) {
+    // Reset the grid
+    for (let row = 0; row < newGrid.length; row++) {
+      for (let col = 0; col < newGrid[0].length; col++) {
+        if (
+          !(row === startNode.row && col === startNode.col) &&
+          !(row === endNode.row && col === endNode.col)
+        ) {
+          newGrid[row][col].isWall = Math.random() < wallProbability;
+        }
       }
+    }
+
+    // Check if a valid path exists
+    if (findPath(newGrid, startNode, endNode)) {
+      return newGrid;
     }
   }
 
-  // Ensure a valid path exists
-  const path = findPath(newGrid, startNode, endNode);
-  if (!path) {
-    return randomMaze(grid, startNode, endNode); // Regenerate if no valid path
-  }
-
-  return newGrid;
+  // If no valid maze is generated after maxAttempts, return an empty maze
+  console.warn(
+    "Failed to generate a valid random maze. Returning an empty maze."
+  );
+  return grid.map((row) => row.map((node) => ({ ...node, isWall: false })));
 };
 
 const recursiveDivisionMaze = (grid, startNode, endNode) => {

@@ -24,6 +24,7 @@ const App = () => {
   const [algorithm, setAlgorithm] = useState("dijkstra");
   const [speed, setSpeed] = useState(5);
   const [mazeType, setMazeType] = useState("none");
+  const [isGeneratingMaze, setIsGeneratingMaze] = useState(false);
 
   useEffect(() => {
     resetGrid();
@@ -60,10 +61,16 @@ const App = () => {
 
   const handleMazeTypeChange = (type) => {
     setMazeType(type);
+    setIsGeneratingMaze(true);
     const startNode = grid[START_NODE_ROW][START_NODE_COL];
     const endNode = grid[END_NODE_ROW][END_NODE_COL];
-    const newGrid = generateMaze(grid, startNode, endNode, type);
-    setGrid(newGrid);
+
+    // Use setTimeout to allow the UI to update before starting the maze generation
+    setTimeout(() => {
+      const newGrid = generateMaze(grid, startNode, endNode, type);
+      setGrid(newGrid);
+      setIsGeneratingMaze(false);
+    }, 0);
   };
 
   const handleSpeedChange = (speed) => {
@@ -202,13 +209,17 @@ const App = () => {
         onSpeedChange={handleSpeedChange}
         onResetGrid={handleResetGrid}
       />
-      <Grid
-        grid={grid}
-        onMouseDown={handleMouseDown}
-        onMouseEnter={handleMouseEnter}
-        onMouseUp={handleMouseUp}
-      />
-      <button onClick={() => visualizeAlgorithm()}>
+      {isGeneratingMaze ? (
+        <div className="loading"></div>
+      ) : (
+        <Grid
+          grid={grid}
+          onMouseDown={handleMouseDown}
+          onMouseEnter={handleMouseEnter}
+          onMouseUp={handleMouseUp}
+        />
+      )}
+      <button onClick={() => visualizeAlgorithm()} disabled={isGeneratingMaze}>
         Visualize {algorithm.toUpperCase()}
       </button>
     </div>
