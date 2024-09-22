@@ -10,6 +10,7 @@ import { dfs, getNodesInShortestPathOrderDFS } from "./algorithms/dfs";
 import { astar, getNodesInShortestPathOrderAStar } from "./algorithms/astar";
 import { generateMaze } from "./algorithms/mazeGenerator";
 import "./index.css";
+import Footer from "./components/Footer";
 
 const ROWS = 20;
 const COLS = 20;
@@ -222,6 +223,7 @@ const App = () => {
       <button onClick={() => visualizeAlgorithm()} disabled={isGeneratingMaze}>
         Visualize {algorithm.toUpperCase()}
       </button>
+      <Footer />
     </div>
   );
 };

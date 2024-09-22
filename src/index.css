@@ -5,7 +5,7 @@
 }
 html,
 body {
-  font-family: "Quicksand", serif;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
@@ -130,4 +130,13 @@ button {
   .App {
     padding-bottom: 50px;
   }
+}
+
+.footer {
+  margin-top: 20px;
+}
+
+.footer a {
+  text-decoration: underline;
+  color: #0000ff;
 }
