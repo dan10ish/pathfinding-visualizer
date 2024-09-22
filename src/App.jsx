@@ -210,20 +210,25 @@ const App = () => {
         onSpeedChange={handleSpeedChange}
         onResetGrid={handleResetGrid}
       />
-      {isGeneratingMaze ? (
-        <div className="loading"></div>
-      ) : (
-        <Grid
-          grid={grid}
-          onMouseDown={handleMouseDown}
-          onMouseEnter={handleMouseEnter}
-          onMouseUp={handleMouseUp}
-        />
-      )}
-      <button onClick={() => visualizeAlgorithm()} disabled={isGeneratingMaze}>
-        Visualize {algorithm.toUpperCase()}
-      </button>
-      <Footer />
+      <div className="rest-app">
+        {isGeneratingMaze ? (
+          <div className="loading"></div>
+        ) : (
+          <Grid
+            grid={grid}
+            onMouseDown={handleMouseDown}
+            onMouseEnter={handleMouseEnter}
+            onMouseUp={handleMouseUp}
+          />
+        )}
+        <button
+          onClick={() => visualizeAlgorithm()}
+          disabled={isGeneratingMaze}
+        >
+          Visualize {algorithm.toUpperCase()}
+        </button>
+        <Footer />
+      </div>
     </div>
   );
 };
