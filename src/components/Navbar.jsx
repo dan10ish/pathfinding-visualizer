@@ -1,4 +1,5 @@
 import React from "react";
+import { Github, User } from "lucide-react";
 
 const Navbar = ({
   algorithm,
@@ -7,13 +8,36 @@ const Navbar = ({
   onMazeTypeChange,
   onSpeedChange,
   onResetGrid,
+  onVisualize,
+  isGeneratingMaze,
 }) => {
   return (
     <div className="navbar">
-      <h1>Pathfinding Visualizer</h1>
+      <div className="title-section">
+        <h1>Pathfinding Visualizer</h1>
+        <div className="nav-links">
+          <a 
+            href="https://danish.bio" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            aria-label="Visit Danish's website"
+          >
+            <User size={20} />
+          </a>
+          <a 
+            href="https://github.com/dan10ish/pathfinding-visualizer" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            aria-label="View source code on GitHub"
+          >
+            <Github size={20} />
+          </a>
+        </div>
+      </div>
       <div className="nav-dropdown">
-        <div className="selectName">Algorithm :</div>
+        <label htmlFor="algorithm-select" className="selectName">Algorithm :</label>
         <select
+          id="algorithm-select"
           className="dropdown"
           value={algorithm}
           onChange={(e) => onAlgorithmChange(e.target.value)}
@@ -23,8 +47,9 @@ const Navbar = ({
           <option value="dfs">DFS</option>
           <option value="astar">A*</option>
         </select>
-        <div className="selectName">Maze Type :</div>
+        <label htmlFor="maze-select" className="selectName">Maze Type :</label>
         <select
+          id="maze-select"
           className="dropdown"
           value={mazeType}
           onChange={(e) => onMazeTypeChange(e.target.value)}
@@ -33,8 +58,9 @@ const Navbar = ({
           <option value="random">Random Maze</option>
           <option value="recursive">Recursive Maze</option>
         </select>
-        <div className="selectName">Speed :</div>
+        <label htmlFor="speed-select" className="selectName">Speed :</label>
         <select
+          id="speed-select"
           className="dropdown"
           onChange={(e) => onSpeedChange(e.target.value)}
         >
@@ -43,9 +69,18 @@ const Navbar = ({
           <option value="slow">Slow</option>
         </select>
       </div>
-      <button className="resetButton" onClick={onResetGrid}>
-        Reset Grid
-      </button>
+      <div className="button-group">
+        <button 
+          className="visualizeButton" 
+          onClick={onVisualize}
+          disabled={isGeneratingMaze}
+        >
+          Visualize {algorithm.toUpperCase()}
+        </button>
+        <button className="resetButton" onClick={onResetGrid}>
+          Reset Grid
+        </button>
+      </div>
     </div>
   );
 };

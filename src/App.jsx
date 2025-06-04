@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Navbar from "./components/Navbar";
 import Grid from "./components/Grid";
 import {
@@ -10,7 +10,6 @@ import { dfs, getNodesInShortestPathOrderDFS } from "./algorithms/dfs";
 import { astar, getNodesInShortestPathOrderAStar } from "./algorithms/astar";
 import { generateMaze } from "./algorithms/mazeGenerator";
 import "./index.css";
-import Footer from "./components/Footer";
 
 const ROWS = 20;
 const COLS = 20;
@@ -27,10 +26,6 @@ const App = () => {
   const [mazeType, setMazeType] = useState("none");
   const [isGeneratingMaze, setIsGeneratingMaze] = useState(false);
 
-  useEffect(() => {
-    resetGrid();
-  }, []);
-
   const createNode = (row, col) => {
     return {
       row,
@@ -44,7 +39,7 @@ const App = () => {
     };
   };
 
-  const resetGrid = () => {
+  const resetGrid = useCallback(() => {
     const newGrid = [];
     for (let row = 0; row < ROWS; row++) {
       const currentRow = [];
@@ -54,7 +49,11 @@ const App = () => {
       newGrid.push(currentRow);
     }
     setGrid(newGrid);
-  };
+  }, []);
+
+  useEffect(() => {
+    resetGrid();
+  }, [resetGrid]);
 
   const handleAlgorithmChange = (algo) => {
     setAlgorithm(algo);
@@ -209,6 +208,8 @@ const App = () => {
         onMazeTypeChange={handleMazeTypeChange}
         onSpeedChange={handleSpeedChange}
         onResetGrid={handleResetGrid}
+        onVisualize={visualizeAlgorithm}
+        isGeneratingMaze={isGeneratingMaze}
       />
       <div className="rest-app">
         {isGeneratingMaze ? (
@@ -221,13 +222,6 @@ const App = () => {
             onMouseUp={handleMouseUp}
           />
         )}
-        <button
-          onClick={() => visualizeAlgorithm()}
-          disabled={isGeneratingMaze}
-        >
-          Visualize {algorithm.toUpperCase()}
-        </button>
-        <Footer />
       </div>
     </div>
   );

@@ -50,6 +50,27 @@ button {
   font-weight: 500;
 }
 
+.title-section {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.nav-links {
+  display: flex;
+  gap: 10px;
+}
+
+.nav-links a {
+  color: #333;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.nav-links a:hover {
+  color: #0080ff;
+}
+
 .nav-dropdown {
   margin-top: 20px;
   display: grid;
@@ -107,6 +128,17 @@ button {
     height: 15px;
   }
 
+  .button-group {
+    flex-direction: row;
+    gap: 10px;
+    margin-top: 0px !important;
+  }
+
+  .resetButton, .visualizeButton {
+    font-size: 12px;
+    padding: 8px 16px;
+  }
+
   .App {
     padding-bottom: 30px;
   }
@@ -133,17 +165,49 @@ button {
     font-size: 16px;
   }
 
+  .button-group {
+    flex-direction: row;
+  }
+
   .App {
     padding-bottom: 50px;
   }
 }
 
-.footer {
+.button-group {
+  display: flex;
+  gap: 15px;
   margin-top: 20px;
 }
 
-.footer a {
-  text-decoration: underline;
-  color: #0080ff;
-  text-underline-offset: 3px;
+.resetButton, .visualizeButton {
+  padding: 10px 20px;
+  font-size: 14px;
+  cursor: pointer;
+  border: none;
+  border-radius: 4px;
+  font-weight: 500;
+}
+
+.resetButton {
+  background-color: #dc3545;
+  color: white;
+}
+
+.resetButton:hover {
+  background-color: #c82333;
+}
+
+.visualizeButton {
+  background-color: #007bff;
+  color: white;
+}
+
+.visualizeButton:hover:not(:disabled) {
+  background-color: #0056b3;
+}
+
+.visualizeButton:disabled {
+  background-color: #6c757d;
+  cursor: not-allowed;
 }
