@@ -16,17 +16,17 @@ const Navbar = ({
       <div className="title-section">
         <h1>Pathfinding Visualizer</h1>
         <div className="nav-links">
-          <a 
-            href="https://danish.bio" 
-            target="_blank" 
+          <a
+            href="https://dan10ish.github.io"
+            target="_blank"
             rel="noopener noreferrer"
             aria-label="Visit Danish's website"
           >
             <User size={20} />
           </a>
-          <a 
-            href="https://github.com/dan10ish/pathfinding-visualizer" 
-            target="_blank" 
+          <a
+            href="https://github.com/dan10ish/pathfinding-visualizer"
+            target="_blank"
             rel="noopener noreferrer"
             aria-label="View source code on GitHub"
           >
@@ -35,7 +35,9 @@ const Navbar = ({
         </div>
       </div>
       <div className="nav-dropdown">
-        <label htmlFor="algorithm-select" className="selectName">Algorithm :</label>
+        <label htmlFor="algorithm-select" className="selectName">
+          Algorithm :
+        </label>
         <select
           id="algorithm-select"
           className="dropdown"
@@ -47,7 +49,9 @@ const Navbar = ({
           <option value="dfs">DFS</option>
           <option value="astar">A*</option>
         </select>
-        <label htmlFor="maze-select" className="selectName">Maze Type :</label>
+        <label htmlFor="maze-select" className="selectName">
+          Maze Type :
+        </label>
         <select
           id="maze-select"
           className="dropdown"
@@ -58,7 +62,9 @@ const Navbar = ({
           <option value="random">Random Maze</option>
           <option value="recursive">Recursive Maze</option>
         </select>
-        <label htmlFor="speed-select" className="selectName">Speed :</label>
+        <label htmlFor="speed-select" className="selectName">
+          Speed :
+        </label>
         <select
           id="speed-select"
           className="dropdown"
@@ -70,8 +76,8 @@ const Navbar = ({
         </select>
       </div>
       <div className="button-group">
-        <button 
-          className="visualizeButton" 
+        <button
+          className="visualizeButton"
           onClick={onVisualize}
           disabled={isGeneratingMaze}
         >
